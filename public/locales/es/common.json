@@ -1,0 +1,26 @@
+{
+  "email": "Correo electrónico```json file="public/locales/es/common.json"
+{
+  "email": "Correo electrónico",
+  "emailRequired": "El correo electrónico es obligatorio",
+  "invalidEmail": "Dirección de correo electrónico inválida",
+  "emailPlaceholder": "tu@ejemplo.com",
+  "password": "Contraseña",
+  "passwordRequired": "La contraseña es obligatoria",
+  "passwordMinLength": "La contraseña debe tener al menos 8 caracteres",
+  "passwordPlaceholder": "••••••••",
+  "rememberMe": "Recuérdame",
+  "forgotPassword": "¿Olvidaste tu contraseña?",
+  "signIn": "Iniciar sesión",
+  "orContinueWith": "O continuar con",
+  "signInWith": "Iniciar sesión con {{provider}}",
+  "noAccount": "¿No tienes una cuenta?",
+  "signUp": "Regístrate",
+  "passwordStrength": "Fortaleza de la contraseña",
+  "passwordNone": "Ninguna",
+  "passwordWeak": "Débil",
+  "passwordFair": "Regular",
+  "passwordGood": "Buena",
+  "passwordStrong": "Fuerte"
+}
+

@@ -1,0 +1,24 @@
+{
+  "email": "Email",
+  "emailRequired": "Email is required",
+  "invalidEmail": "Invalid email address",
+  "emailPlaceholder": "you@example.com",
+  "password": "Password",
+  "passwordRequired": "Password is required",
+  "passwordMinLength": "Password must be at least 8 characters",
+  "passwordPlaceholder": "••••••••",
+  "rememberMe": "Remember me",
+  "forgotPassword": "Forgot your password?",
+  "signIn": "Sign In",
+  "orContinueWith": "Or continue with",
+  "signInWith": "Sign in with {{provider}}",
+  "noAccount": "Don't have an account?",
+  "signUp": "Sign up",
+  "passwordStrength": "Password Strength",
+  "passwordNone": "None",
+  "passwordWeak": "Weak",
+  "passwordFair": "Fair",
+  "passwordGood": "Good",
+  "passwordStrong": "Strong"
+}
+
