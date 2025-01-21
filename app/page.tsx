@@ -3,7 +3,11 @@
 import { motion } from "framer-motion"
 import Background from "@/components/Background"
 import LanguageSelector from "@/components/LanguageSelector"
-import NavigationBar from "@/components/NavigationBar"
+import { NavigationBar } from "@/components/NavigationBar";
+import { HeroSection } from "@/components/HeroSection";
+import { FeatureSection } from "@/components/FeatureSection";
+import { HeroSection2 } from "@/components/HeroSection2";
+import { LogoCarousel } from "@/components/LogoCarousel";
 
 export default function LandingPage() {
   return (
@@ -11,24 +15,15 @@ export default function LandingPage() {
       <Background />
       
       {/* Hero Section */}
-      <div className="flex flex-col items-center justify-center h-screen text-center z-10">
-        <h1 className="text-5xl font-bold mb-4" style={{ textShadow: "0 0 20px rgba(0, 229, 153, 0.5)" }}>
-          Transform Your Ideas into Stunning Videos
-        </h1>
-        <p className="text-lg mb-6 max-w-2xl">
-          Create professional videos effortlessly with our AI-powered tools. Reach global audiences and enhance your content creation process.
-        </p>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => window.location.href = '/en/login'} // Redirect to login
-          className="bg-[#00E599] text-white py-3 px-6 rounded-lg hover:bg-[#00E599]/90 transition-colors"
-        >
-          Get Started
-        </motion.button>
-      </div>
+      <HeroSection />
 
-      {/* Features Section */}
+      {/* Feature Section */}
+      <FeatureSection />
+
+      {/* Logo Carousel */}
+      <LogoCarousel />
+
+      {/* Why Choose Us Section */}
       <div className="py-20 bg-[#151921]/80 z-10">
         <h2 className="text-3xl font-bold text-center mb-10">Why Choose Us?</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto px-4">
@@ -67,5 +62,5 @@ export default function LandingPage() {
       {/* Navigation Bar */}
       <NavigationBar />
     </div>
-  )
+  );
 } 

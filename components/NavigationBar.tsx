@@ -1,67 +1,177 @@
-'use client';
+'use client'
+import React, { useEffect, useState } from "react";
+import { FloatingDock } from "@/components/ui/floating-dock";
+import {
+  IconBrandGithub,
+  IconBrandX,
+  IconExchange,
+  IconHome,
+  IconNewSection,
+  IconTerminal2,
+  IconMenu2,
+  // IconLogin,
+} from "@tabler/icons-react";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 
-import { motion } from "framer-motion"
-import { useRouter } from "next/navigation"
-import { FaHome, FaSearch, FaChartPie, FaHistory, FaUser } from 'react-icons/fa'
+export function NavigationBar() {
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-export default function NavigationBar() {
-  const router = useRouter()
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const screenHeight = window.innerHeight;
+
+      if (currentScrollY > lastScrollY && currentScrollY > screenHeight * 0.7) {
+        setIsVisible(false);
+        setIsMobileMenuOpen(false);
+      } else if (currentScrollY < lastScrollY || currentScrollY < screenHeight * 0.3) {
+        setIsVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
+  const links = [
+    {
+      title: "Home",
+      icon: (
+        <IconHome className="h-full w-full text-gray-400 group-hover:text-[#00E599]" />
+      ),
+      href: "/en",
+    },
+    {
+      title: "Products",
+      icon: (
+        <IconTerminal2 className="h-full w-full text-gray-400 group-hover:text-[#00E599]" />
+      ),
+      href: "/en/products",
+    },
+    {
+      title: "Components",
+      icon: (
+        <IconNewSection className="h-full w-full text-gray-400 group-hover:text-[#00E599]" />
+      ),
+      href: "/en/components",
+    },
+    {
+      title: "Aceternity UI",
+      icon: (
+        <Image
+          src="https://assets.aceternity.com/logo-dark.png"
+          width={20}
+          height={20}
+          alt="Aceternity Logo"
+        />
+      ),
+      href: "#",
+    },
+    {
+      title: "Changelog",
+      icon: (
+        <IconExchange className="h-full w-full text-gray-400 group-hover:text-[#00E599]" />
+      ),
+      href: "#",
+    },
+    {
+      title: "Twitter",
+      icon: (
+        <IconBrandX className="h-full w-full text-gray-400 group-hover:text-[#00E599]" />
+      ),
+      href: "#",
+    },
+    {
+      title: "GitHub",
+      icon: (
+        <IconBrandGithub className="h-full w-full text-gray-400 group-hover:text-[#00E599]" />
+      ),
+      href: "https://github.com",
+    },
+  ];
 
   return (
-    <motion.div
-      initial={{ y: 100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
-      className="fixed bottom-6 inset-x-0 mx-auto w-fit z-50"
-    >
-      <div className="flex items-center space-x-4 sm:space-x-6 md:space-x-8 px-4 sm:px-5 md:px-6 py-3 bg-[#151921]/90 backdrop-blur-lg rounded-full border border-white/10 shadow-lg">
-        <button
-          onClick={() => router.push('/')}
-          className="flex flex-col items-center text-gray-400 hover:text-[#00E599] transition-colors"
-          aria-label="Home"
-          tabIndex={0}
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ opacity: 0, y: 100 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 100 }}
+          transition={{ duration: 0.3 }}
+          className="fixed bottom-0 left-0 right-0 z-50"
         >
-          <FaHome className="w-4 h-4 sm:w-5 sm:h-5 mb-1" />
-          <span className="text-[10px] sm:text-xs">Home</span>
-        </button>
-        
-        <button 
-          className="flex flex-col items-center text-gray-400 hover:text-[#00E599] transition-colors"
-          aria-label="Search"
-          tabIndex={0}
-        >
-          <FaSearch className="w-4 h-4 sm:w-5 sm:h-5 mb-1" />
-          <span className="text-[10px] sm:text-xs">Search</span>
-        </button>
-        
-        <button 
-          className="flex flex-col items-center text-gray-400 hover:text-[#00E599] transition-colors"
-          aria-label="Pricing"
-          tabIndex={0}
-        >
-          <FaChartPie className="w-4 h-4 sm:w-5 sm:h-5 mb-1" />
-          <span className="text-[10px] sm:text-xs">Pricing</span>
-        </button>
-        
-        <button 
-          className="flex flex-col items-center text-gray-400 hover:text-[#00E599] transition-colors"
-          aria-label="Contact Us"
-          tabIndex={0}
-        >
-          <FaHistory className="w-4 h-4 sm:w-5 sm:h-5 mb-1" />
-          <span className="text-[10px] sm:text-xs">Contact Us</span>
-        </button>
-        
-        <button
-          onClick={() => router.push('/en/login')}
-          className="flex flex-col items-center text-gray-400 hover:text-[#00E599] transition-colors"
-          aria-label="Profile"
-          tabIndex={0}
-        >
-          <FaUser className="w-4 h-4 sm:w-5 sm:h-5 mb-1" />
-          <span className="text-[10px] sm:text-xs">Profile</span>
-        </button>
-      </div>
-    </motion.div>
-  )
-} 
+          {isMobile ? (
+            // Mobile Navigation
+            <div className="p-4">
+              <motion.div
+                className="bg-[#151921]/90 backdrop-blur-lg rounded-2xl border border-white/10 shadow-lg overflow-hidden"
+                initial={false}
+                animate={{
+                  height: isMobileMenuOpen ? 'auto' : '64px',
+                }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+              >
+                <div className="p-4 flex items-center justify-between">
+                  <span className="text-gray-400">Menu</span>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-[#00E599]"
+                  >
+                    <IconMenu2 className="w-6 h-6" />
+                  </motion.button>
+                </div>
+                {isMobileMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="px-4 pb-4 grid grid-cols-3 gap-4"
+                  >
+                    {links.map((item) => (
+                      <motion.a
+                        key={item.title}
+                        href={item.href}
+                        className="flex flex-col items-center p-2 group"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <div className="w-6 h-6 mb-1">{item.icon}</div>
+                        <span className="text-xs text-gray-400 group-hover:text-[#00E599]">
+                          {item.title}
+                        </span>
+                      </motion.a>
+                    ))}
+                  </motion.div>
+                )}
+              </motion.div>
+            </div>
+          ) : (
+            // Desktop Navigation
+            <div className="flex items-center justify-center pb-6">
+              <FloatingDock items={links} />
+            </div>
+          )}
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}

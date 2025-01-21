@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation';
 
 const DocumentationPage = () => {
   const params = useParams();
-  const locale = params.locale as string;
+  const locale = params?.locale as string;
 
   const sections = [
     'Overview',
