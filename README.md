@@ -142,3 +142,208 @@ Contributions are welcome! Please follow these steps:
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## API Reference
+
+### Generate Script
+
+```http
+POST /api/generate-script
+```
+
+Generates a new video script using AI.
+
+#### Request Body
+
+```json
+{
+  "topic": "string",
+  "description": "string",
+  "keywords": "string[] | string",
+  "tone": "string",
+  "duration": "string"
+}
+```
+
+#### Response
+
+```json
+{
+  "script": {
+    "_id": "string",
+    "userId": "string",
+    "topic": "string",
+    "description": "string",
+    "keywords": ["string"],
+    "tone": "string",
+    "duration": "string",
+    "content": "string",
+    "createdAt": "string",
+    "updatedAt": "string"
+  },
+  "generatedContent": {
+    "content": "string",
+    "metadata": {
+      "topic": "string",
+      "description": "string",
+      "keywords": ["string"],
+      "tone": "string",
+      "duration": "string"
+    }
+  }
+}
+```
+
+### Get Scripts
+
+```http
+GET /api/scripts
+```
+
+Retrieves all scripts for the current user.
+
+#### Response
+
+```json
+{
+  "scripts": [
+    {
+      "_id": "string",
+      "userId": "string",
+      "topic": "string",
+      "description": "string",
+      "keywords": ["string"],
+      "tone": "string",
+      "duration": "string",
+      "content": "string",
+      "createdAt": "string",
+      "updatedAt": "string"
+    }
+  ]
+}
+```
+
+### Delete Script
+
+```http
+DELETE /api/scripts/{id}
+```
+
+Deletes a specific script.
+
+#### Response
+
+```json
+{
+  "message": "Script deleted successfully"
+}
+```
+
+### Error Responses
+
+All endpoints may return the following error response:
+
+```json
+{
+  "error": "Error message description"
+}
+```
+
+Common HTTP status codes:
+
+- `200`: Success
+- `400`: Bad Request
+- `401`: Unauthorized
+- `404`: Not Found
+- `500`: Internal Server Error
+
+### Generate Audio
+
+```http
+POST /api/generate-audio
+```
+
+Generates audio from a script using ElevenLabs API.
+
+#### Request Body
+
+```json
+{
+  "text": "string",
+  "voice_id": "string",
+  "stability": "number",
+  "similarity_boost": "number",
+  "scriptId": "string"
+}
+```
+
+#### Response
+
+```json
+{
+  "audioUrl": "string",
+  "record": {
+    "_id": "string",
+    "userId": "string",
+    "scriptId": "string",
+    "audioUrl": "string",
+    "voiceSettings": {
+      "voice_id": "string",
+      "stability": "number",
+      "similarity_boost": "number"
+    },
+    "createdAt": "string",
+    "updatedAt": "string"
+  }
+}
+```
+
+### Get Audio History
+
+```http
+GET /api/audio-history
+```
+
+Retrieves all generated audio files for the current user.
+
+#### Response
+
+```json
+{
+  "records": [
+    {
+      "_id": "string",
+      "userId": "string",
+      "scriptId": "string",
+      "audioUrl": "string",
+      "voiceSettings": {
+        "voice_id": "string",
+        "stability": "number",
+        "similarity_boost": "number"
+      },
+      "createdAt": "string",
+      "updatedAt": "string"
+    }
+  ]
+}
+```
+
+### Download Audio
+
+```http
+POST /api/download-audio
+```
+
+Downloads an audio file from Google Cloud Storage.
+
+#### Request Body
+
+```json
+{
+  "audioUrl": "string"
+}
+```
+
+#### Response
+
+Binary audio file (audio/mpeg)

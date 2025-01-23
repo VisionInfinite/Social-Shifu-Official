@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { IconBrandGithub } from '@tabler/icons-react';
 
 const DocumentationPage = () => {
   const params = useParams();
@@ -13,6 +14,7 @@ const DocumentationPage = () => {
     'Tech Stack',
     'Getting Started',
     'Components',
+    'API Reference',
     'Script Generation',
     'Styling',
     'Routing',
@@ -111,6 +113,234 @@ const DocumentationPage = () => {
             <p className="text-gray-300 mb-4">
               Displays a carousel of logos from popular platforms, providing a visual representation of trusted brands.
             </p>
+          </div>
+        </section>
+
+        {/* API Reference Section */}
+        <section id="api-reference" className="mb-12">
+          <h2 className="text-2xl font-semibold mb-6">API Reference</h2>
+          
+          {/* Generate Script API */}
+          <div className="space-y-6">
+            <div className="p-6 bg-gray-800/50 rounded-lg border border-gray-700">
+              <h3 className="text-xl font-medium text-[#00E599] mb-4">Generate Script API</h3>
+              <div className="space-y-4">
+                <div>
+                  <p className="text-gray-300 mb-2">
+                    <span className="bg-blue-500/20 text-blue-400 px-2 py-1 rounded">POST</span>
+                    <code className="ml-2 text-gray-400">/api/generate-script</code>
+                  </p>
+                  <p className="text-gray-400">Generates a new video script using AI.</p>
+                </div>
+
+                <div>
+                  <h4 className="text-white font-medium mb-2">Request Body</h4>
+                  <pre className="bg-gray-900 p-4 rounded-md overflow-x-auto">
+                    <code className="text-sm text-gray-300">
+{`{
+  "topic": "string",
+  "description": "string",
+  "keywords": "string[] | string",
+  "tone": "string",
+  "duration": "string"
+}`}
+                    </code>
+                  </pre>
+                </div>
+
+                <div>
+                  <h4 className="text-white font-medium mb-2">Response</h4>
+                  <pre className="bg-gray-900 p-4 rounded-md overflow-x-auto">
+                    <code className="text-sm text-gray-300">
+{`{
+  "script": {
+    "_id": "string",
+    "userId": "string",
+    "topic": "string",
+    "description": "string",
+    "keywords": string[],
+    "tone": "string",
+    "duration": "string",
+    "content": "string",
+    "createdAt": "string",
+    "updatedAt": "string"
+  },
+  "generatedContent": {
+    "content": "string",
+    "metadata": {
+      "topic": "string",
+      "description": "string",
+      "keywords": string[],
+      "tone": "string",
+      "duration": "string"
+    }
+  }
+}`}
+                    </code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+
+            {/* Scripts API */}
+            <div className="p-6 bg-gray-800/50 rounded-lg border border-gray-700">
+              <h3 className="text-xl font-medium text-[#00E599] mb-4">Scripts API</h3>
+              
+              <div className="space-y-6">
+                {/* GET Scripts */}
+                <div>
+                  <p className="text-gray-300 mb-2">
+                    <span className="bg-green-500/20 text-green-400 px-2 py-1 rounded">GET</span>
+                    <code className="ml-2 text-gray-400">/api/scripts</code>
+                  </p>
+                  <p className="text-gray-400">Retrieves all scripts for the current user.</p>
+                  
+                  <h4 className="text-white font-medium mt-4 mb-2">Response</h4>
+                  <pre className="bg-gray-900 p-4 rounded-md overflow-x-auto">
+                    <code className="text-sm text-gray-300">
+{`{
+  "scripts": [
+    {
+      "_id": "string",
+      "userId": "string",
+      "topic": "string",
+      "description": "string",
+      "keywords": string[],
+      "tone": "string",
+      "duration": "string",
+      "content": "string",
+      "createdAt": "string",
+      "updatedAt": "string"
+    }
+  ]
+}`}
+                    </code>
+                  </pre>
+                </div>
+
+                {/* DELETE Script */}
+                <div>
+                  <p className="text-gray-300 mb-2">
+                    <span className="bg-red-500/20 text-red-400 px-2 py-1 rounded">DELETE</span>
+                    <code className="ml-2 text-gray-400">/api/scripts/[id]</code>
+                  </p>
+                  <p className="text-gray-400">Deletes a specific script.</p>
+                  
+                  <h4 className="text-white font-medium mt-4 mb-2">Response</h4>
+                  <pre className="bg-gray-900 p-4 rounded-md overflow-x-auto">
+                    <code className="text-sm text-gray-300">
+{`{
+  "message": "Script deleted successfully"
+}`}
+                    </code>
+                  </pre>
+                </div>
+              </div>
+            </div>
+
+            {/* Audio API */}
+            <div className="p-6 bg-gray-800/50 rounded-lg border border-gray-700">
+              <h3 className="text-xl font-medium text-[#00E599] mb-4">Audio API</h3>
+              
+              <div className="space-y-6">
+                {/* Generate Audio */}
+                <div>
+                  <p className="text-gray-300 mb-2">
+                    <span className="bg-blue-500/20 text-blue-400 px-2 py-1 rounded">POST</span>
+                    <code className="ml-2 text-gray-400">/api/generate-audio</code>
+                  </p>
+                  <p className="text-gray-400">Generates audio from a script using ElevenLabs API.</p>
+                  
+                  <h4 className="text-white font-medium mt-4 mb-2">Request Body</h4>
+                  <pre className="bg-gray-900 p-4 rounded-md overflow-x-auto">
+                    <code className="text-sm text-gray-300">
+{`{
+  "text": "string",
+  "voice_id": "string",
+  "stability": "number",
+  "similarity_boost": "number",
+  "scriptId": "string"
+}`}
+                    </code>
+                  </pre>
+
+                  <h4 className="text-white font-medium mt-4 mb-2">Response</h4>
+                  <pre className="bg-gray-900 p-4 rounded-md overflow-x-auto">
+                    <code className="text-sm text-gray-300">
+{`{
+  "audioUrl": "string",
+  "record": {
+    "_id": "string",
+    "userId": "string",
+    "scriptId": "string",
+    "audioUrl": "string",
+    "voiceSettings": {
+      "voice_id": "string",
+      "stability": "number",
+      "similarity_boost": "number"
+    },
+    "createdAt": "string",
+    "updatedAt": "string"
+  }
+}`}
+                    </code>
+                  </pre>
+                </div>
+
+                {/* Get Audio History */}
+                <div>
+                  <p className="text-gray-300 mb-2">
+                    <span className="bg-green-500/20 text-green-400 px-2 py-1 rounded">GET</span>
+                    <code className="ml-2 text-gray-400">/api/audio-history</code>
+                  </p>
+                  <p className="text-gray-400">Retrieves all generated audio files for the current user.</p>
+                  
+                  <h4 className="text-white font-medium mt-4 mb-2">Response</h4>
+                  <pre className="bg-gray-900 p-4 rounded-md overflow-x-auto">
+                    <code className="text-sm text-gray-300">
+{`{
+  "records": [
+    {
+      "_id": "string",
+      "userId": "string",
+      "scriptId": "string",
+      "audioUrl": "string",
+      "voiceSettings": {
+        "voice_id": "string",
+        "stability": "number",
+        "similarity_boost": "number"
+      },
+      "createdAt": "string",
+      "updatedAt": "string"
+    }
+  ]
+}`}
+                    </code>
+                  </pre>
+                </div>
+
+                {/* Download Audio */}
+                <div>
+                  <p className="text-gray-300 mb-2">
+                    <span className="bg-blue-500/20 text-blue-400 px-2 py-1 rounded">POST</span>
+                    <code className="ml-2 text-gray-400">/api/download-audio</code>
+                  </p>
+                  <p className="text-gray-400">Downloads an audio file from Google Cloud Storage.</p>
+                  
+                  <h4 className="text-white font-medium mt-4 mb-2">Request Body</h4>
+                  <pre className="bg-gray-900 p-4 rounded-md overflow-x-auto">
+                    <code className="text-sm text-gray-300">
+{`{
+  "audioUrl": "string"
+}`}
+                    </code>
+                  </pre>
+
+                  <h4 className="text-white font-medium mt-4 mb-2">Response</h4>
+                  <p className="text-gray-400">Binary audio file (audio/mpeg)</p>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
