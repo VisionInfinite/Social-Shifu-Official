@@ -2,13 +2,14 @@
 
 ## Overview
 
-This is a modern web application built with Next.js 13+, featuring a responsive design with a dark theme. The application uses various modern technologies and best practices to ensure maintainability and scalability.
+This is a modern web application built with Next.js 13+, featuring a responsive design with a dark theme and AI-powered script generation capabilities.
 
 ## Table of Contents
 
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Getting Started](#getting-started)
+- [Features](#features)
 - [Components](#components)
 - [Styling](#styling)
 - [Deployment](#deployment)
@@ -20,9 +21,33 @@ This is a modern web application built with Next.js 13+, featuring a responsive 
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
 - **Animation**: Framer Motion
-- **Icons**: React Icons
-- **State Management**: [Your state management solution]
-- **Authentication**: [Your auth solution]
+- **Icons**: Tabler Icons
+- **AI Integration**: Google Gemini API
+- **Form Handling**: React Hook Form
+- **Notifications**: Sonner
+- **State Management**: Local Storage for script persistence
+
+## Features
+
+### AI Script Generation
+
+The application includes a powerful AI script generator with:
+
+- Structured script format (Hook, Intro, Main Content, CTA)
+- Camera angle suggestions
+- Emphasis points and pacing notes
+- Tone customization
+- Duration optimization
+- Keyword integration
+
+### Script Display
+
+- Section-based layout
+- Color-coded elements
+- Copy to clipboard
+- Download as text file
+- Share functionality
+- Mobile-responsive design
 
 ## Project Structure
 
@@ -56,25 +81,45 @@ To get started with the project, follow these steps:
    npm install
    ```
 
-3. Start the development server:
+3. Set up environment variables:
+   Create a `.env.local` file with:
+
+```env
+MONGODB_URI=your_mongodb_uri
+GEMINI_API_KEY=your_gemini_api_key
+GEMINI_MODEL=gemini-1.5-flash
+```
+
+4. Start the development server:
 
    ```bash
    npm run dev
    ```
 
-4. Open your browser and navigate to `http://localhost:3000`.
+5. Open your browser and navigate to `http://localhost:3000`.
 
 ## Components
 
-### NavigationBar
+### GenerateScript
 
-The `NavigationBar` component is responsible for rendering the bottom navigation bar. It includes buttons for navigation and uses Framer Motion for animations.
+The `GenerateScript` component handles the script generation form with:
 
-#### Key Features:
+- Topic input
+- Description with character counter
+- Keywords input
+- Tone selection
+- Duration selection
+- Real-time validation
+- Loading states
 
-- Responsive design
-- Dark mode support
-- Accessibility features (aria-labels, tabIndex)
+### GeneratedScript
+
+The `GeneratedScript` page displays the generated script with:
+
+- Section-based layout
+- Color-coded elements
+- Action buttons (Copy, Download, Share)
+- Navigation back to generator
 
 ## Styling
 

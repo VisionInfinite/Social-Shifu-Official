@@ -9,6 +9,9 @@ import {
   IconNewSection,
   IconTerminal2,
   IconMenu2,
+  IconPencil,
+  IconMicrophone,
+  IconFiles,
   // IconLogin,
 } from "@tabler/icons-react";
 import Image from "next/image";
@@ -50,60 +53,69 @@ export function NavigationBar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
-  const links = [
+  const navigationItems = [
     {
       title: "Home",
       icon: (
         <IconHome className="h-full w-full text-gray-400 group-hover:text-[#00E599]" />
       ),
-      href: "/en",
+      href: "/",
+    },
+    {
+      title: "Generate Script",
+      icon: (
+        <IconPencil className="h-full w-full text-gray-400 group-hover:text-[#00E599]" />
+      ),
+      href: "/generate-script",
+    },
+    {
+      title: "Generated Scripts",
+      icon: (
+        <IconFiles className="h-full w-full text-gray-400 group-hover:text-[#00E599]" />
+      ),
+      href: "/generated-scripts",
+    },
+    {
+      title: "Generate Audio",
+      icon: (
+        <IconMicrophone className="h-full w-full text-gray-400 group-hover:text-[#00E599]" />
+      ),
+      href: "/generate-audio",
     },
     {
       title: "Products",
       icon: (
-        <IconTerminal2 className="h-full w-full text-gray-400 group-hover:text-[#00E599]" />
-      ),
-      href: "/en/products",
-    },
-    {
-      title: "Components",
-      icon: (
         <IconNewSection className="h-full w-full text-gray-400 group-hover:text-[#00E599]" />
       ),
-      href: "/en/components",
+      href: "/products",
     },
     {
-      title: "Aceternity UI",
+      title: "Terminal",
       icon: (
-        <Image
-          src="https://assets.aceternity.com/logo-dark.png"
-          width={20}
-          height={20}
-          alt="Aceternity Logo"
-        />
+        <IconTerminal2 className="h-full w-full text-gray-400 group-hover:text-[#00E599]" />
       ),
-      href: "#",
+      href: "/terminal",
     },
     {
-      title: "Changelog",
+      title: "Exchange",
       icon: (
         <IconExchange className="h-full w-full text-gray-400 group-hover:text-[#00E599]" />
       ),
-      href: "#",
-    },
-    {
-      title: "Twitter",
-      icon: (
-        <IconBrandX className="h-full w-full text-gray-400 group-hover:text-[#00E599]" />
-      ),
-      href: "#",
+      href: "/exchange",
     },
     {
       title: "GitHub",
       icon: (
         <IconBrandGithub className="h-full w-full text-gray-400 group-hover:text-[#00E599]" />
       ),
-      href: "https://github.com",
+      href: "https://github.com/Vision-Infinity",
+    },
+    {
+      title: "Twitter",
+      icon: (
+        <IconBrandX className="h-full w-full text-gray-400 group-hover:text-[#00E599]" />
+      ),
+      href: "https://twitter.com/VisionInfinity_",
     },
   ];
 
@@ -119,34 +131,34 @@ export function NavigationBar() {
         >
           {isMobile ? (
             // Mobile Navigation
-            <div className="p-4">
+            <div className="bg-[#151921]/80 backdrop-blur-lg border-t border-white/10">
+              <div className="px-4 pt-4">
+                <button
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  className="w-full py-2 flex items-center justify-center gap-2 
+                  text-gray-400 hover:text-white transition-colors"
+                >
+                  <IconMenu2 size={24} />
+                  <span className="text-sm">Menu</span>
+                </button>
+              </div>
               <motion.div
-                className="bg-[#151921]/90 backdrop-blur-lg rounded-2xl border border-white/10 shadow-lg overflow-hidden"
                 initial={false}
-                animate={{
-                  height: isMobileMenuOpen ? 'auto' : '64px',
+                animate={isMobileMenuOpen ? "open" : "closed"}
+                variants={{
+                  open: { height: "auto", opacity: 1 },
+                  closed: { height: 0, opacity: 0 },
                 }}
-                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                transition={{ duration: 0.2 }}
+                className="overflow-hidden"
               >
-                <div className="p-4 flex items-center justify-between">
-                  <span className="text-gray-400">Menu</span>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                    className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-[#00E599]"
-                  >
-                    <IconMenu2 className="w-6 h-6" />
-                  </motion.button>
-                </div>
                 {isMobileMenuOpen && (
                   <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
                     className="px-4 pb-4 grid grid-cols-3 gap-4"
                   >
-                    {links.map((item) => (
+                    {navigationItems.map((item) => (
                       <motion.a
                         key={item.title}
                         href={item.href}
@@ -167,7 +179,7 @@ export function NavigationBar() {
           ) : (
             // Desktop Navigation
             <div className="flex items-center justify-center pb-6">
-              <FloatingDock items={links} />
+              <FloatingDock items={navigationItems} />
             </div>
           )}
         </motion.div>

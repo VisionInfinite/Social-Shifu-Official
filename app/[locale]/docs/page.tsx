@@ -13,6 +13,7 @@ const DocumentationPage = () => {
     'Tech Stack',
     'Getting Started',
     'Components',
+    'Script Generation',
     'Styling',
     'Routing',
     'Deployment'
@@ -98,12 +99,50 @@ const DocumentationPage = () => {
             <p className="text-gray-300 mb-4">
               A responsive bottom navigation component with smooth animations and accessibility features.
             </p>
-            <ul className="list-disc list-inside text-gray-300 space-y-2">
-              <li>Responsive design across all devices</li>
-              <li>Dark theme support</li>
-              <li>Framer Motion animations</li>
-              <li>Accessibility compliant</li>
-            </ul>
+            <h3 className="font-medium text-[#00E599] mb-2">HeroSection</h3>
+            <p className="text-gray-300 mb-4">
+              Displays the main hero content of the application, including a background image and a title.
+            </p>
+            <h3 className="font-medium text-[#00E599] mb-2">FeatureSection</h3>
+            <p className="text-gray-300 mb-4">
+              Showcases the key features of the application, highlighting the benefits and functionalities.
+            </p>
+            <h3 className="font-medium text-[#00E599] mb-2">LogoCarousel</h3>
+            <p className="text-gray-300 mb-4">
+              Displays a carousel of logos from popular platforms, providing a visual representation of trusted brands.
+            </p>
+          </div>
+        </section>
+
+        {/* Script Generation Section */}
+        <section id="script-generation" className="mb-12">
+          <h2 className="text-2xl font-semibold mb-4">Script Generation</h2>
+          <div className="space-y-6">
+            <div className="p-4 bg-gray-800/50 rounded-lg border border-gray-700">
+              <h3 className="font-medium text-[#00E599] mb-2">AI Script Generator</h3>
+              <p className="text-gray-300 mb-4">
+                The application features an AI-powered script generator that creates structured video scripts with:
+              </p>
+              <ul className="list-disc list-inside text-gray-300 space-y-2">
+                <li>Attention-grabbing hooks</li>
+                <li>Clear introductions</li>
+                <li>Structured main content</li>
+                <li>Compelling calls to action</li>
+                <li>Camera angle suggestions</li>
+                <li>Emphasis points and pacing notes</li>
+              </ul>
+            </div>
+
+            <div className="p-4 bg-gray-800/50 rounded-lg border border-gray-700">
+              <h3 className="font-medium text-[#00E599] mb-2">Script Display Features</h3>
+              <ul className="list-disc list-inside text-gray-300 space-y-2">
+                <li>Section-based layout with visual hierarchy</li>
+                <li>Color-coded elements for better readability</li>
+                <li>Copy, download, and share functionality</li>
+                <li>Smooth animations and transitions</li>
+                <li>Mobile-responsive design</li>
+              </ul>
+            </div>
           </div>
         </section>
 

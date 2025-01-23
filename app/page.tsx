@@ -9,6 +9,7 @@ import { FeatureSection } from "@/components/FeatureSection";
 import { HeroSection2 } from "@/components/HeroSection2";
 import { LogoCarousel } from "@/components/LogoCarousel";
 
+
 export default function LandingPage() {
   return (
     <div className="min-h-screen flex flex-col bg-[#0C1117] text-white relative overflow-hidden">

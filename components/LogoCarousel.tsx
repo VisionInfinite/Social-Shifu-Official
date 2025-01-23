@@ -4,41 +4,55 @@ import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
+// Import logos
+import netflixLogo from "@/public/logos/netflix.svg";
+import instagramLogo from "@/public/logos/instagram.svg";
+// import tiktokLogo from "@/public/logos/tiktok.svg";
+// import youtubeLogo from "@/public/logos/youtube.svg";
+import twitchLogo from "@/public/logos/twitch.svg";
+import spotifyLogo from "@/public/logos/spotify.svg";
+import discordLogo from "@/public/logos/discord.svg";
+
 const LOGOS = [
   {
-    src: "/logos/netflix.svg",
+    src: netflixLogo,
     alt: "Netflix",
     width: 120,
+    height: 50,
   },
   {
-    src: "/logos/instagram.svg",
+    src: instagramLogo,
     alt: "Instagram",
     width: 120,
   },
+  // {
+  //   src: tiktokLogo,
+  //   alt: "TikTok",
+  //   width: 100,
+  //   height: 100,
+  // },
+  // {
+  //   src: youtubeLogo,
+  //   alt: "YouTube",
+  //   width: 140,
+  // },
   {
-    src: "/logos/tiktok.svg",
-    alt: "TikTok",
-    width: 100,
-  },
-  {
-    src: "/logos/youtube.svg",
-    alt: "YouTube",
-    width: 140,
-  },
-  {
-    src: "/logos/twitch.svg",
+    src: twitchLogo,
     alt: "Twitch",
-    width: 100,
+    width: 120,
+    height: 50,
   },
   {
-    src: "/logos/spotify.svg",
+    src: spotifyLogo,
     alt: "Spotify",
     width: 120,
+    height: 100,
   },
   {
-    src: "/logos/discord.svg",
+    src: discordLogo,
     alt: "Discord",
-    width: 130,
+    width: 120,
+    height: 100,
   }
 ];
 
@@ -73,8 +87,8 @@ export const LogoCarousel = () => {
                   src={logo.src}
                   alt={logo.alt}
                   width={logo.width}
-                  height={40}
-                  className="object-contain h-12"
+                  height={logo.height}
+                  className="object-contain h-16"
                 />
               </div>
             ))}
@@ -99,8 +113,8 @@ export const LogoCarousel = () => {
                   src={logo.src}
                   alt={logo.alt}
                   width={logo.width}
-                  height={40}
-                  className="object-contain h-12"
+                  height={logo.height}
+                  className="object-contain h-16"
                 />
               </div>
             ))}
@@ -129,8 +143,8 @@ export const LogoCarousel = () => {
                   src={logo.src}
                   alt={logo.alt}
                   width={logo.width}
-                  height={40}
-                  className="object-contain h-12"
+                  height={logo.height}
+                  className="object-contain h-16"
                 />
               </div>
             ))}
@@ -155,8 +169,8 @@ export const LogoCarousel = () => {
                   src={logo.src}
                   alt={logo.alt}
                   width={logo.width}
-                  height={40}
-                  className="object-contain h-12"
+                  height={logo.height}
+                  className="object-contain h-16"
                 />
               </div>
             ))}
