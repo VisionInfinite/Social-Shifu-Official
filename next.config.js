@@ -8,12 +8,41 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.pexels.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'videos.pexels.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'pixabay.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.pixabay.com',
+        port: '',
+        pathname: '/**',
+      }
     ],
   },
-  // i18n: {
-  //   locales: ['en', 'es', 'fr', 'hi'],
-  //   defaultLocale: 'en',
-  // },
+  experimental: {
+    forceSwcTransforms: true, // Force SWC transforms
+  },
 }
 
-module.exports = nextConfig 
+module.exports = nextConfig

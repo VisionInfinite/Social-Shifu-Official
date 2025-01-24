@@ -18,4 +18,23 @@ export async function GET() {
       { status: 500 }
     );
   }
+}
+
+export async function POST(request: Request) {
+  try {
+    const scriptData = await request.json();
+    
+    await connectMongoDB();
+    
+    const script = new ScriptModel(scriptData);
+    await script.save();
+
+    return NextResponse.json(script);
+  } catch (error) {
+    console.error('Error saving script:', error);
+    return NextResponse.json(
+      { error: 'Failed to save script' },
+      { status: 500 }
+    );
+  }
 } 

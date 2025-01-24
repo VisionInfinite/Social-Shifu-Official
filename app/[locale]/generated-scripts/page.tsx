@@ -10,7 +10,9 @@ import {
   IconMicrophone,
   IconBrandYoutube,
   IconBrandTiktok,
-  IconBrandInstagram 
+  IconBrandInstagram,
+  IconEye,
+  IconCode
 } from '@tabler/icons-react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
@@ -22,6 +24,7 @@ export default function GeneratedScriptsPage() {
   const [generatedScript, setGeneratedScript] = useState<GeneratedScript | null>(null);
   const [scripts, setScripts] = useState<Script[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showRawScript, setShowRawScript] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -86,7 +89,37 @@ export default function GeneratedScriptsPage() {
     router.push('/generate-script');
   };
 
-  const formatScriptContent = (content: string) => {
+  const cleanScript = (content: string): string => {
+    return content
+      .split('\n')
+      .map(line => {
+        // Remove all numbered sections with any text after
+        line = line.replace(/^\d+\.\s*([\w\s]+:)?/gm, '');
+        // Remove scene directions [in brackets]
+        line = line.replace(/\[.*?\]/g, '');
+        // Remove narrator tags
+        line = line.replace(/Narrator:\s*/gi, '');
+        // Remove all section headers
+        line = line.replace(/^(Hook|Intro|Main Content|Call to Action|CTA|Conclusion|Camera Angles and Directions|Emphasis Points)[\w\s]*:?/gim, '');
+        // Remove timing indicators
+        line = line.replace(/\d+-\d+\s*seconds:?\*?/g, '');
+        // Remove asterisks and their content
+        line = line.replace(/\*(.*?)\*/g, '$1');
+        // Remove parenthetical directions
+        line = line.replace(/\(.*?\)/g, '');
+        // Remove empty lines or just numbers
+        if (line.match(/^\d+\.?$/) || !line.trim()) {
+          return '';
+        }
+        return line.trim();
+      })
+      .filter(line => line.trim()) // Remove empty lines
+      .join('\n');
+  };
+  
+  
+
+    const formatScriptContent = (content: string) => {
     return content.split('\n').map((line, index) => {
       // Camera directions [in brackets]
       if (line.match(/\[.*?\]/)) {
@@ -213,8 +246,35 @@ export default function GeneratedScriptsPage() {
 
                 {/* Script Content */}
                 <div className="p-6 bg-[#0C1117]/50">
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-medium text-white">Script Content</h3>
+                    <button
+                      onClick={() => setShowRawScript(!showRawScript)}
+                      className="p-2 text-gray-400 hover:text-white bg-[#151921] rounded-lg 
+                      hover:bg-[#151921]/80 transition-all flex items-center gap-2"
+                      title={showRawScript ? "Show Full Script" : "Show Clean Script"}
+                    >
+                      {showRawScript ? (
+                        <>
+                          <IconEye size={18} />
+                          <span className="text-sm">Show Full Script</span>
+                        </>
+                      ) : (
+                        <>
+                          <IconCode size={18} />
+                          <span className="text-sm">Show Clean Script</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
                   <div className="prose prose-invert max-w-none">
-                    {formatScriptContent(generatedScript.content)}
+                    {showRawScript ? (
+                      <div className="text-gray-300 text-base leading-relaxed">
+                        {cleanScript(generatedScript.content)}
+                      </div>
+                    ) : (
+                      formatScriptContent(generatedScript.content)
+                    )}
                   </div>
                 </div>
 
