@@ -6,9 +6,10 @@ export async function GET() {
   try {
     await connectMongoDB();
 
-    const scripts = await ScriptModel.find({ userId: 'user123' }) // Replace with actual user ID
+    const scripts = await ScriptModel.find()
       .sort({ createdAt: -1 })
-      .limit(20);
+      .limit(20)
+      .lean();
 
     return NextResponse.json({ scripts });
   } catch (error) {
@@ -26,10 +27,14 @@ export async function POST(request: Request) {
     
     await connectMongoDB();
     
-    const script = new ScriptModel(scriptData);
-    await script.save();
+    const script = await ScriptModel.create({
+      ...scriptData,
+      userId: 'user123', // Replace with actual user ID when auth is implemented
+      createdAt: new Date(),
+      updatedAt: new Date()
+    });
 
-    return NextResponse.json(script);
+    return NextResponse.json({ script });
   } catch (error) {
     console.error('Error saving script:', error);
     return NextResponse.json(

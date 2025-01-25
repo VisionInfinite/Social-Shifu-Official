@@ -1,30 +1,32 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 // Define the schema for audio metadata
-export interface AudioDocument extends Document {
+interface AudioDocument extends Document {
   userId: string;
   scriptId: string;
+  fileName: string;
+  audioUrl: string;
   voiceSettings: {
     voice_id: string;
     stability: number;
     similarity_boost: number;
   };
-  audioUrl: string;
-  fileName: string;
   createdAt: Date;
+  updatedAt: Date;
 }
 
 const AudioSchema = new Schema<AudioDocument>({
-  userId: { type: String, required: true, index: true },
-  scriptId: { type: String, required: true, index: true },
+  userId: { type: String, required: true },
+  scriptId: { type: String, required: true },
+  fileName: { type: String, required: true },
+  audioUrl: { type: String, required: true },
   voiceSettings: {
     voice_id: { type: String, required: true },
     stability: { type: Number, required: true },
     similarity_boost: { type: Number, required: true }
   },
-  audioUrl: { type: String, required: true },
-  fileName: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
 });
 
 // Ensure indexes are created

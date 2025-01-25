@@ -1,107 +1,93 @@
 import { NextResponse } from 'next/server';
-import connectMongoDB from '@/lib/mongodb';
-import ScriptModel from '@/lib/models/Script';
-import { generateContent } from '@/lib/gemini';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+const model = genAI.getGenerativeModel({ model: process.env.GEMINI_MODEL || 'gemini-1.5-pro' });
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    console.log('Received request body:', body);
+    const { topic, description, keywords, tone, duration } = await request.json();
 
-    const { topic, description, keywords, tone, duration, scriptId } = body;
-
-    // Validate required fields
-    if (!topic || !description) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-    }
-
-    await connectMongoDB();
-
-    // Generate the script content using Gemini
-    const prompt = `Create a ${duration} video script about ${topic}. 
+    // First prompt for detailed script with scene directions
+    const detailedPrompt = `Create a ${duration} video script about "${topic}". 
     Description: ${description}
-    Keywords: ${keywords.join(', ')}
+    Keywords: ${keywords}
+    Tone: ${tone}
+
+    Format the script with:
+    1. Hook
+    2. Intro
+    3. Main Content
+    4. Call to Action
+    Include [Camera Angles and Directions] and *Emphasis Points*`;
+
+    // Second prompt for clean script
+    const cleanPrompt = `Write a clean, narration-only script for a ${duration} video about "${topic}".
+    Description: ${description}
+    Keywords: ${keywords}
     Tone: ${tone}
     
-    Format the script with:
-    1. Hook/Intro
-    2. Main Content
-    3. Call to Action
-    4. Camera Angles and Directions in [brackets]
-    5. Emphasis Points in *asterisks*
-    
-    Make it engaging and optimized for social media.`;
+    Write only the narration text without any scene directions, headings, or formatting.`;
 
-    const generatedContent = await generateContent(prompt);
-    console.log('Generated content:', generatedContent);
+    // Updated asset suggestions prompt with new format
+    const assetPrompt = `Based on the video topic "${topic}" and description "${description}", provide asset suggestions in the following format:
 
-    // Process keywords to ensure it's an array
-    const processedKeywords = Array.isArray(keywords) ? keywords : keywords.split(',').map((k: string) => k.trim());
+    1️⃣ PNG Images
+    Provide an array of PNG images required:
+    ["image1", "image2", "image3", "image4"]
+    - These will be overlaid on videos or used as supporting visuals
+    - Source Priority: Unsplash, Pexels, Pixabay
 
-    if (scriptId) {
-      // Update existing script
-      const updatedScript = await ScriptModel.findByIdAndUpdate(
-        scriptId,
-        {
-          topic,
-          description,
-          keywords: processedKeywords,
-          tone,
-          duration,
-          content: generatedContent,
-          updatedAt: new Date()
-        },
-        { new: true }
-      );
+    2️⃣ General Images
+    Provide an array of general images required:
+    ["image1", "image2", "image3"]
+    - For backgrounds, scene transitions, or B-roll
+    - Source Priority: Unsplash, Pexels, Pixabay
+    - Will be stored in Google Cloud Storage
 
-      if (!updatedScript) {
-        return NextResponse.json({ error: 'Script not found' }, { status: 404 });
-      }
+    3️⃣ Video Clips
+    Provide an array of short video clips required:
+    ["clip1", "clip2", "clip3"]
+    - For B-roll and enhancing video content
+    - Source Priority: Pexels for free stock videos
+    - Will be stored in Google Cloud Storage
 
-      return NextResponse.json({ 
-        script: updatedScript,
-        generatedContent: {
-          content: generatedContent,
-          metadata: {
-            topic,
-            description,
-            keywords: processedKeywords,
-            tone,
-            duration
-          }
-        }
-      });
-    } else {
-      // Create new script
-      const newScript = await ScriptModel.create({
-        userId: 'user123', // Replace with actual user ID
+    4️⃣ Backgrounds
+    Provide an array of background images required:
+    ["background1", "background2", "background3"]
+    - For layering behind text or AI avatars
+    - Source Priority: Unsplash, Pexels, Pixabay
+    - Will be stored in Google Cloud Storage
+
+    Please provide specific, detailed descriptions for each asset that match the ${tone} tone and ${duration} duration of the video.`;
+
+    // Generate all content in parallel
+    const [detailedResponse, cleanResponse, assetResponse] = await Promise.all([
+      model.generateContent(detailedPrompt),
+      model.generateContent(cleanPrompt),
+      model.generateContent(assetPrompt)
+    ]);
+
+    const [detailedResult, cleanResult, assetResult] = await Promise.all([
+      detailedResponse.response.text(),
+      cleanResponse.response.text(),
+      assetResponse.response.text()
+    ]);
+
+    const generatedContent = {
+      detailedScript: detailedResult,
+      cleanScript: cleanResult,
+      assetSuggestions: assetResult,
+      metadata: {
         topic,
         description,
-        keywords: processedKeywords,
+        keywords: Array.isArray(keywords) ? keywords : keywords.split(',').map((k: string) => k.trim()),
         tone,
-        duration,
-        content: generatedContent,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      });
+        duration
+      }
+    };
 
-      const response = {
-        script: newScript,
-        generatedContent: {
-          content: generatedContent,
-          metadata: {
-            topic,
-            description,
-            keywords: processedKeywords,
-            tone,
-            duration
-          }
-        }
-      };
-
-      console.log('Response:', response);
-      return NextResponse.json(response);
-    }
+    return NextResponse.json({ generatedContent });
   } catch (error) {
     console.error('Error generating script:', error);
     return NextResponse.json(

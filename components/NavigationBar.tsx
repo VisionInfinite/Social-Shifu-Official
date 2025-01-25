@@ -69,11 +69,11 @@ export function NavigationBar() {
       href: "/generate-script",
     },
     {
-      title: "Generated Scripts",
+      title: "Generated Script",
       icon: (
         <IconFiles className="h-full w-full text-gray-400 group-hover:text-[#00E599]" />
       ),
-      href: "/generated-scripts",
+      href: "/generated-script",
     },
     {
       title: "Generate Audio",

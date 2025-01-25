@@ -2,6 +2,10 @@
 
 # dependencies
 /node_modules
+/.pnp
+.pnp.js
+
+# testing
 
 # next.js
 /.next/

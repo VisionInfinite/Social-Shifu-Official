@@ -19,15 +19,23 @@ export interface Script {
   tone: string;
   duration: string;
   content: string;
-  assets?: Asset[];  // Reference to associated assets
-  createdAt: Date | string;
-  updatedAt: Date | string;
+  assetSuggestions?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 // Generated script with metadata
 export interface GeneratedScript {
-  content: string;
-  metadata: BaseMetadata;
+  detailedScript: string;
+  cleanScript: string;
+  assetSuggestions: string;
+  metadata: {
+    topic: string;
+    description: string;
+    keywords: string[];
+    tone: string;
+    duration: string;
+  };
 }
 
 // Asset interface with enhanced typing

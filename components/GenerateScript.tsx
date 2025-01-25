@@ -8,6 +8,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { IconRefresh, IconCopy, IconLoader2 } from '@tabler/icons-react';
 import { ScriptHistorySidebar } from './ScriptHistorySidebar';
 import { Script } from '@/lib/types';
+import { NavigationBar } from '@/components/NavigationBar';
 
 interface FormData {
   topic: string;
@@ -30,6 +31,9 @@ export const GenerateScript = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [editingScript, setEditingScript] = useState<Script | null>(null);
 
+  const description = watch('description', '');
+  const maxLength = 280;
+
   // Load script data into form when editing
   useEffect(() => {
     if (editingScript) {
@@ -51,29 +55,27 @@ export const GenerateScript = () => {
     try {
       const response = await fetch('/api/generate-script', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           ...data,
           keywords: data.keywords.split(',').map(k => k.trim()),
         }),
       });
 
-      const result = await response.json();
-      
       if (!response.ok) {
-        throw new Error(result.error || 'Failed to generate script');
+        throw new Error('Failed to generate script');
       }
 
-      // Store both the script and its metadata
-      localStorage.setItem('generatedScript', JSON.stringify(result.generatedContent));
+      const result = await response.json();
       
-      // Reset form and editing state
-      reset();
-      setEditingScript(null);
+      // Save to localStorage
+      localStorage.setItem('generatedScript', JSON.stringify(result));
       
-      // Navigate to the generated script page
-      router.push(`/${locale}/generated-scripts`);
-      toast.success('Script generated successfully!');
+      // Redirect to generated script page
+      router.push(`/${locale}/generated-script`);
+      
     } catch (error) {
       console.error('Error:', error);
       toast.error('Failed to generate script');
@@ -117,29 +119,22 @@ export const GenerateScript = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#0C1117]">
-      {/* Sidebar */}
-      <ScriptHistorySidebar onSelectScript={handleSelectScript} />
-
-      {/* Main Content */}
-      <div className="flex-1 p-4 md:p-8">
+    <div className="min-h-screen bg-[#0C1117] p-4 md:p-8">
+      <div className="max-w-4xl mx-auto pb-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="max-w-4xl mx-auto space-y-8"
+          className="space-y-8"
         >
-          <motion.div 
-            className="text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Create Your <span className="text-[#00E599]">Video Script</span>
+          {/* Form header */}
+          <div className="text-center space-y-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-white">
+              Generate Your <span className="text-[#00E599]">Script</span>
             </h1>
             <p className="text-gray-400 text-lg">
-              Let AI craft your perfect video script in seconds
+              Create engaging video scripts with AI
             </p>
-          </motion.div>
+          </div>
 
           {/* Add editing indicator */}
           {editingScript && (
@@ -148,12 +143,12 @@ export const GenerateScript = () => {
             </div>
           )}
 
+          {/* Form */}
           <motion.form
             onSubmit={handleSubmit(onSubmit)}
             className="space-y-8 bg-[#151921] p-8 rounded-2xl border border-white/10 shadow-xl"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4 md:col-span-2">
@@ -186,7 +181,7 @@ export const GenerateScript = () => {
                   ) : (
                     <span className="text-gray-400">Be descriptive for better results</span>
                   )}
-                  <span className="text-gray-400">{charCount}/1000</span>
+                  <span className="text-gray-400">{charCount}/{maxLength}</span>
                 </div>
               </div>
 
@@ -233,19 +228,19 @@ export const GenerateScript = () => {
               </div>
             </div>
 
+            {/* Submit button */}
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-4 px-6 bg-[#00E599] text-black font-semibold rounded-xl hover:bg-[#00E599]/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
+              className="w-full py-4 px-6 bg-[#00E599] text-black font-semibold rounded-xl 
+              hover:bg-[#00E599]/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed 
+              transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
             >
               {isLoading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                  </svg>
-                  Generating Script...
-                </span>
+                <>
+                  <IconLoader2 className="animate-spin" size={20} />
+                  Generating...
+                </>
               ) : (
                 'Generate Script'
               )}
@@ -253,6 +248,7 @@ export const GenerateScript = () => {
           </motion.form>
         </motion.div>
       </div>
+      <NavigationBar />
     </div>
   );
 }; 
